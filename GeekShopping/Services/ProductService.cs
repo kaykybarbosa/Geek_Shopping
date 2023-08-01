@@ -19,7 +19,7 @@ namespace GeekShopping.Services
             _mapper = mapper;
         }
 
-        public async Task<ProductResponse> FindById(long id)
+        public async Task<ProductResponse> FindProductById(long id)
         {
             var product = await _productRepository.FindById(id);
 
@@ -40,7 +40,7 @@ namespace GeekShopping.Services
             return response;
         }
 
-        public async Task<AllProductsResponse> FindAll()
+        public async Task<AllProductsResponse> FindAllProducts()
         {
             IEnumerable<Product> products = await _productRepository.FindAll();
             IEnumerable<ProductResponse> productsMapper = _mapper.Map<IEnumerable<ProductResponse>>(products);
@@ -54,7 +54,7 @@ namespace GeekShopping.Services
             };
         }
 
-        public async Task<ProductResponse> Create(ProductRequest request)
+        public async Task<ProductResponse> CreateProduct(ProductRequest request)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace GeekShopping.Services
                 };
             }
         }
-        public async Task<ProductResponse> Update(ProductRequestUpdate requestUpdate)
+        public async Task<ProductResponse> UpdateProduct(ProductRequestUpdate requestUpdate)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace GeekShopping.Services
             }
         }
 
-        public async Task<BaseResponse> Delete(long id)
+        public async Task<BaseResponse> DeleteProduct(long id)
         {
             try
             {

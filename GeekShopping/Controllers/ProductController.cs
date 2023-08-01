@@ -22,7 +22,7 @@ namespace GeekShopping.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _productService.FindAll();
+                var result = await _productService.FindAllProducts();
 
                 if (result.IsSuccess)
                     return Ok(result);
@@ -40,7 +40,7 @@ namespace GeekShopping.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _productService.FindById(id);
+                var result = await _productService.FindProductById(id);
 
                 if (result.IsSuccess)
                     return Ok(result);
@@ -57,7 +57,7 @@ namespace GeekShopping.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _productService.Create(productDto);
+                var result = await _productService.CreateProduct(productDto);
 
                 if (result.IsSuccess)
                     return Ok(result);
@@ -69,11 +69,11 @@ namespace GeekShopping.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(ProductRequestUpdate productUpdateDto)
+        public async Task<IActionResult> Update([FromBody] ProductRequestUpdate productUpdateDto)
         {
             if (ModelState.IsValid)
             {
-                var result = await _productService.Update(productUpdateDto);
+                var result = await _productService.UpdateProduct(productUpdateDto);
 
                 if (result.IsSuccess)
                     return Ok(result);
@@ -89,7 +89,7 @@ namespace GeekShopping.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _productService.Delete(id);
+                var result = await _productService.DeleteProduct(id);
 
                 if (result.IsSuccess)
                     return Ok(result);

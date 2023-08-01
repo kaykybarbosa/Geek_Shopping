@@ -7,10 +7,10 @@ namespace GeekShopping.Interfaces
 {
     public interface IProductService
     {
-        Task<ProductResponse> FindById(long id);
-        Task<AllProductsResponse> FindAll();
-        Task<ProductResponse> Create(ProductRequest productDto);
-        Task<ProductResponse> Update(ProductRequestUpdate productDto);
-        Task<BaseResponse> Delete(long id);
+        Task<ProductResponse> FindProductById(long id);
+        Task<AllProductsResponse> FindAllProducts();
+        Task<ProductResponse> CreateProduct(ProductRequest productDto);
+        Task<ProductResponse> UpdateProduct(ProductRequestUpdate productDto);
+        Task<BaseResponse> DeleteProduct(long id);
     }
 }
