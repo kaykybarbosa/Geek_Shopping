@@ -17,16 +17,15 @@ namespace GeekShopping.Controllers
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
 
-        [HttpGet]
+        [HttpGet("all-products")]
         public async Task<IActionResult> FindAll()
         {
             if (ModelState.IsValid)
             {
                 var result = await _productService.FindAllProducts();
 
-                if (result.IsSuccess)
+                //if (result.IsSuccess)
                     return Ok(result);
-
 
                 return BadRequest(result);
             }
@@ -35,14 +34,14 @@ namespace GeekShopping.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("find-product/{id}")]
         public async Task<IActionResult> FindById(long id)
         {
             if (ModelState.IsValid)
             {
                 var result = await _productService.FindProductById(id);
 
-                if (result.IsSuccess)
+                //if (result.IsSuccess)
                     return Ok(result);
 
                 return BadRequest(result);
@@ -52,14 +51,14 @@ namespace GeekShopping.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("create-product")]
         public async Task<ActionResult<ProductResponse>> Create([FromBody] ProductRequest productDto)
         {
             if (ModelState.IsValid)
             {
                 var result = await _productService.CreateProduct(productDto);
 
-                if (result.IsSuccess)
+                //if (result.IsSuccess)
                     return Ok(result);
 
                 return BadRequest(result);
@@ -68,14 +67,14 @@ namespace GeekShopping.Controllers
             return StatusCode(500);
         }
 
-        [HttpPut]
+        [HttpPut("update-product")]
         public async Task<IActionResult> Update([FromBody] ProductRequestUpdate productUpdateDto)
         {
             if (ModelState.IsValid)
             {
                 var result = await _productService.UpdateProduct(productUpdateDto);
 
-                if (result.IsSuccess)
+                //if (result.IsSuccess)
                     return Ok(result);
 
                 return BadRequest(result);
@@ -84,14 +83,14 @@ namespace GeekShopping.Controllers
             return StatusCode(500);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("delete-product/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
             if (ModelState.IsValid)
             {
                 var result = await _productService.DeleteProduct(id);
 
-                if (result.IsSuccess)
+                if (result)
                     return Ok(result);
 
                 return BadRequest(result);
