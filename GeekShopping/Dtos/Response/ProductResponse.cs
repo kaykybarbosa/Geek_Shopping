@@ -1,6 +1,6 @@
 ﻿namespace GeekShopping.Dtos.Response
 {
-    public class ProductResponse : BaseResponse
+    public class ProductResponse
     {
         public long Id { get; set; }
         public String Name { get; set; }
