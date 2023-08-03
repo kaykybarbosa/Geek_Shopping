@@ -15,8 +15,16 @@ namespace GeekShopping.Web.Utils
                     $"{response.ReasonPhrase}");
      
             var dataAsString = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+           
+            try
+            {
+                return JsonSerializer.Deserialize<T>(dataAsString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            catch (Exception ex)
+            {
+                throw new HttpRequestException("Error deseriralizing the response contet.", ex);
+            }
 
-            return JsonSerializer.Deserialize<T>(dataAsString, new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
         }
 
         public static Task<HttpResponseMessage> PostAsJson<T>(this HttpClient httpClient, string url, T data)

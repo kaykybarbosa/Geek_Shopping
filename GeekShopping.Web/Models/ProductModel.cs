@@ -1,6 +1,8 @@
-﻿namespace GeekShopping.Web.Models
+﻿using System.Text.Json.Serialization;
+
+namespace GeekShopping.Web.Models
 {
-    public class ProductModel
+    public class ProductModel 
     {
         public long Id { get; set; }
         public String Name { get; set; }
