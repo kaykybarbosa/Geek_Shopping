@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using GeekShopping.Dtos.Request.Update;
 using GeekShopping.Dtos.Request;
+using GeekShopping.Dtos.Request.Update;
 using GeekShopping.Dtos.Response;
-using GeekShopping.Dtos;
 using GeekShopping.Interfaces;
 using GeekShopping.Model;
 
@@ -21,37 +20,24 @@ namespace GeekShopping.Services
 
         public async Task<ProductResponse> FindProductById(long id)
         {
-            var product = await _productRepository.FindById(id);
+            Product product = await _productRepository.FindById(id);
+            
+            if (product != null)
+            {
+                ProductResponse productMapper = _mapper.Map<ProductResponse>(product);
 
-            if (product == null)
-                return new ProductResponse()
-                {
-                    Message = "Product with this Id not found!",
-                    IsSuccess = false,
-                    StatusCode = 204
-                };
+                return productMapper;
+            }
 
-            ProductResponse response = new();
-            response = _mapper.Map<ProductResponse>(product);
-            response.Message = "Found successfully.";
-            response.IsSuccess = true;
-            response.StatusCode = 302;
-
-            return response;
+            return null;
         }
 
-        public async Task<AllProductsResponse> FindAllProducts()
+        public async Task<IEnumerable<ProductResponse>> FindAllProducts()
         {
             IEnumerable<Product> products = await _productRepository.FindAll();
-            IEnumerable<ProductResponse> productsMapper = _mapper.Map<IEnumerable<ProductResponse>>(products);
-
-            return new AllProductsResponse()
-            {
-                Products = productsMapper,
-                Message = "Products found successfully!",
-                IsSuccess = true,
-                StatusCode = 302
-            };
+           
+            return _mapper.Map<IEnumerable<ProductResponse>>(products); ;
+   
         }
 
         public async Task<ProductResponse> CreateProduct(ProductRequest request)
@@ -61,22 +47,12 @@ namespace GeekShopping.Services
                 Product product = _mapper.Map<Product>(request);
                 await _productRepository.Create(product);
 
-                ProductResponse response = _mapper.Map<ProductResponse>(product);
-                response.Message = "Product created successfully!";
-                response.IsSuccess = true;
-                response.StatusCode = 201;
-
-                return response;
+                return _mapper.Map<ProductResponse>(product); ;
 
             }
             catch (Exception)
             {
-                return new ProductResponse()
-                {
-                    Message = "Error while try save product.",
-                    IsSuccess = false,
-                    StatusCode = 400
-                };
+                return null;
             }
         }
         public async Task<ProductResponse> UpdateProduct(ProductRequestUpdate requestUpdate)
@@ -86,54 +62,30 @@ namespace GeekShopping.Services
                 Product product = _mapper.Map<Product>(requestUpdate);
                 await _productRepository.Update(product);
 
-                ProductResponse response = _mapper.Map<ProductResponse>(product);
-                response.Message = "Product updated successfully!";
-                response.IsSuccess = true;
-                response.StatusCode = 200;
-
-                return response;
+                return _mapper.Map<ProductResponse>(product); ;
 
             }
             catch (Exception)
             {
-                return new ProductResponse()
-                {
-                    Message = "Error while try update product.",
-                    IsSuccess = false,
-                    StatusCode = 400
-                };
+                return null;
             }
         }
 
-        public async Task<BaseResponse> DeleteProduct(long id)
+        public async Task<bool> DeleteProduct(long id)
         {
             try
             {
                 bool result = await _productRepository.Delete(id);
 
                 if (!result)
-                    return new BaseResponse()
-                    {
-                        Message = "Product with this id not found.",
-                        IsSuccess = false,
-                        StatusCode = 204
-                    };
+                    return false;
 
-                return new BaseResponse()
-                {
-                    Message = "Product deleted successfully!",
-                    IsSuccess = true,
-                    StatusCode = 200
-                };
+                return true;
+            
             }
             catch (Exception)
             {
-                return new BaseResponse()
-                {
-                    Message = "Error while try delete product.",
-                    IsSuccess = false,
-                    StatusCode = 400
-                };
+                return false;
             }
         }
     }
