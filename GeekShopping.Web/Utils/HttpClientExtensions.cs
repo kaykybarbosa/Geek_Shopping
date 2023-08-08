@@ -24,7 +24,6 @@ namespace GeekShopping.Web.Utils
             {
                 throw new HttpRequestException("Error deseriralizing the response contet.", ex);
             }
-
         }
 
         public static Task<HttpResponseMessage> PostAsJson<T>(this HttpClient httpClient, string url, T data)
