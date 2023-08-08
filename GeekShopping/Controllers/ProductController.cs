@@ -3,6 +3,8 @@ using GeekShopping.Dtos.Request;
 using GeekShopping.Dtos.Response;
 using GeekShopping.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace GeekShopping.Controllers
 {
@@ -16,7 +18,8 @@ namespace GeekShopping.Controllers
         {
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
-
+        
+        [Authorize]
         [HttpGet("all-products")]
         public async Task<IActionResult> FindAll()
         {
@@ -34,6 +37,7 @@ namespace GeekShopping.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("find-product/{id}")]
         public async Task<IActionResult> FindById(long id)
         {
@@ -51,6 +55,7 @@ namespace GeekShopping.Controllers
 
         }
 
+        [Authorize]
         [HttpPost("create-product")]
         public async Task<ActionResult<ProductResponse>> Create([FromBody] ProductRequest productDto)
         {
@@ -67,6 +72,7 @@ namespace GeekShopping.Controllers
             return StatusCode(500);
         }
 
+        [Authorize]
         [HttpPut("update-product")]
         public async Task<IActionResult> Update([FromBody] ProductRequestUpdate productUpdateDto)
         {
@@ -83,6 +89,7 @@ namespace GeekShopping.Controllers
             return StatusCode(500);
         }
 
+        [Authorize]
         [HttpDelete("delete-product/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
