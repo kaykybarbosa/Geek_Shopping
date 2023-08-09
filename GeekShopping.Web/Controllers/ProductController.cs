@@ -1,5 +1,6 @@
 ﻿using GeekShopping.Web.Interfaces;
 using GeekShopping.Web.Models;
+using GeekShopping.Web.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -87,7 +88,7 @@ namespace GeekShopping.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize] /*(Roles = Role.Admin)*/
+        [Authorize(Roles = Role.Admin)]
         public async Task<IActionResult> ProductDelete(ProductModel product)
         {
             var response = await _productService.DeleteProductById(product.Id);
