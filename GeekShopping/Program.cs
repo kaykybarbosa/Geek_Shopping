@@ -29,7 +29,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 //Security Configuration
 builder.Services.AddAuthentication("Bearer")
-    .AddJwtBearer(options =>
+    .AddJwtBearer("Bearer", options =>
     {
         options.Authority = builder.Configuration["Address:IdentityServer"];
         options.TokenValidationParameters = new TokenValidationParameters
