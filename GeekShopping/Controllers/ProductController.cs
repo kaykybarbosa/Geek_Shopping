@@ -5,6 +5,7 @@ using GeekShopping.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using GeekShopping.ProductApi.Utils;
 
 namespace GeekShopping.Controllers
 {
@@ -89,7 +90,7 @@ namespace GeekShopping.Controllers
             return StatusCode(500);
         }
 
-        [Authorize]
+        [Authorize(Roles = Role.Admin)]
         [HttpDelete("delete-product/{id}")]
         public async Task<IActionResult> Delete(long id)
         {
