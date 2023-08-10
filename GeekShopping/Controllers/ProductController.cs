@@ -20,7 +20,6 @@ namespace GeekShopping.Controllers
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
         
-        [Authorize]
         [HttpGet("all-products")]
         public async Task<IActionResult> FindAll()
         {

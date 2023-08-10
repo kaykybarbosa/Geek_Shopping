@@ -547,6 +547,12 @@ namespace IdentityServerHost.Quickstart.UI
                 }
             }
 
+            // If not, go to Application.Web
+            if (vm.PostLogoutRedirectUri == null)
+            {
+                vm.PostLogoutRedirectUri = "https://localhost:4430";
+            }
+
             return vm;
         }
     }
