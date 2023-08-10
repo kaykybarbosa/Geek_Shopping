@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace GeekShopping.Web.Models
 {
@@ -11,6 +12,9 @@ namespace GeekShopping.Web.Models
         public String CategoryName { get; set; }
         public String ImageUrl { get; set; }
 
+        [Range(1, 100)]
+        public int Count { get; set; } = 1;
+
         public string SubstringName()
         {
             if(Name.Length < 24) 
@@ -21,10 +25,10 @@ namespace GeekShopping.Web.Models
 
         public string SubstringDescription()
         {
-            if (Description.Length < 355)
+            if (Description.Length < 43)
                 return Description;
 
-            return $"{Description.Substring(0, 352)} ...";
+            return $"{Description.Substring(0, 40)} ...";
         }
     }
 }
