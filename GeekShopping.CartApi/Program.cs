@@ -1,6 +1,9 @@
 using AutoMapper;
 using GeekShopping.CartApi.Config;
+using GeekShopping.CartApi.Interfaces;
 using GeekShopping.CartApi.Model.Context;
+using GeekShopping.CartApi.Repository;
+using GeekShopping.CartApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -13,9 +16,13 @@ builder.Services.AddControllers();
 var connection = builder.Configuration.GetConnectionString("ConnectionStringSql");
 builder.Services.AddDbContext<MySqlContextCart>(options => options.UseSqlServer(connection));
 
+//Dependency injections
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
