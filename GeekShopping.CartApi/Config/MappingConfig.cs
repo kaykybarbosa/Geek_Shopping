@@ -11,11 +11,15 @@ namespace GeekShopping.CartApi.Config
         {
             var mappingConfig = new MapperConfiguration(config =>
             {
-                config.CreateMap<ProductRequest, Product>().ReverseMap();
+                config.CreateMap<ProductRequest, Product>();
+                config.CreateMap<Product, ProductResponse>();
+
                 config.CreateMap<CartDetailRequest, CartDetail>();
                 config.CreateMap<CartDetail, CartDetailResponse>();
+
                 config.CreateMap<CartHeaderRequest, CartHeader>();
                 config.CreateMap<CartHeader, CartHeaderResponse>();
+
                 config.CreateMap<CartRequest, Cart>();
                 config.CreateMap<Cart, CartResponse>();
             });
