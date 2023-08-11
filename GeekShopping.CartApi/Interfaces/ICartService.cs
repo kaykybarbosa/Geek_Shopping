@@ -6,7 +6,7 @@ namespace GeekShopping.CartApi.Interfaces
     public interface ICartService
     {
         Task<CartResponse> FindCartByUserId(string userId);
-        Task<CartResponse> SaveOrDeleteCart(CartRequest cart);
+        Task<CartResponse> SaveOrUpdateCart(CartRequest cart);
         Task<bool> RemoveFromCart(long cartDetailsId);
         Task<bool> ApplyCoupon(string userId, string couponCode);
         Task<bool> RemoveCoupon(string userId);
