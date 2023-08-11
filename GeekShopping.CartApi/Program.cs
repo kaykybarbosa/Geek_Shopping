@@ -69,7 +69,6 @@ builder.Services.AddSwaggerGen(c =>
             new List<string>()
         }
     });
-
 });
 
 var app = builder.Build();
