@@ -21,28 +21,41 @@ namespace GeekShopping.CartApi.Services
         {
             throw new NotImplementedException();
         }
-
-        public Task<bool> ClearCart(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CartResponse> FindCartByUserId(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<bool> RemoveCoupon(string userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> RemoveFromCart(long cartDetailsId)
+        public async Task<bool> ClearCart(string userId)
         {
-            throw new NotImplementedException();
+            CartHeader cartHeader = await _cartRepository.FindCartHeader(userId);
+            if (cartHeader != null)
+            {
+                await _cartRepository.RemoveCartDetailRange(cartHeader.Id);
+
+                await _cartRepository.RemoveCartHeader(cartHeader);
+
+                return true;
+            }
+
+            return false;
         }
 
-        public async Task<CartResponse> SaveOrDeleteCart(CartRequest cartRequest)
+        public async Task<CartResponse> FindCartByUserId(string userId)
+        {
+            CartHeader cartHeader = await _cartRepository.FindCartHeader(userId);
+            IEnumerable<CartDetail> cartDetails = await _cartRepository.FindCartDetails(cartHeader.Id);
+
+            Cart cart = new()
+            {
+                CartHeader = cartHeader,
+                CartDetails = cartDetails
+            };
+
+            return _mapper.Map<CartResponse>(cart);
+        }
+
+        public async Task<CartResponse> SaveOrUpdateCart(CartRequest cartRequest)
         {
             Cart cart = _mapper.Map<Cart>(cartRequest);
 
@@ -54,7 +67,7 @@ namespace GeekShopping.CartApi.Services
             }
 
             //Check if CartHeader is null
-            var cartHeader = await _cartRepository.FindCartHeader(cart.CartHeader.UserId);
+            var cartHeader = await _cartRepository.FindCartHeaderNoTracking(cart.CartHeader.UserId);
             if (cartHeader == null)
             {
                 //Create CartHeader and CartDetails
@@ -72,7 +85,7 @@ namespace GeekShopping.CartApi.Services
                 var detailtId = cartRequest.CartDetails.FirstOrDefault().ProductId;
                 var headerId = cartHeader.Id;
 
-                var cartDetails = await _cartRepository.FindCartDetail(detailtId, headerId);
+                var cartDetails = await _cartRepository.FindCartDetailNoTracking(detailtId, headerId);
                 if(cartDetails == null)
                 {
                     //Create CartDetails
@@ -95,6 +108,37 @@ namespace GeekShopping.CartApi.Services
             }
 
             return _mapper.Map<CartResponse>(cart);
+        }
+
+        public async Task<bool> RemoveFromCart(long cartDetailsId)
+        {
+            try
+            {
+                CartDetail cartDetail = await _cartRepository.FindCartDetail(cartDetailsId);
+
+                IEnumerable<CartDetail> cartDetails = await _cartRepository.FindCartDetails(cartDetail.CartHeaderId);
+
+                int total = 0;
+                foreach(var items in cartDetails)
+                {
+                    total++;
+                }
+
+                await _cartRepository.RemoveCartDetail(cartDetail);
+
+                if(total == 1)
+                {
+                    var cartHeaderToRemove = await _cartRepository.FindCartHeader(cartDetail.CartHeaderId);
+
+                    await _cartRepository.RemoveCartHeader(cartHeaderToRemove);
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

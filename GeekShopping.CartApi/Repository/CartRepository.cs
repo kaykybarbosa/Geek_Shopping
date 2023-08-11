@@ -35,7 +35,7 @@ namespace GeekShopping.CartApi.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<CartHeader> FindCartHeader(string userId)
+        public async Task<CartHeader> FindCartHeaderNoTracking(string userId)
         {
             var cartHeader = await _context.CartHeaders.AsNoTracking().FirstOrDefaultAsync(h =>
                 h.UserId == userId);
@@ -51,12 +51,18 @@ namespace GeekShopping.CartApi.Repository
             return product;
         }
 
-        public async Task<CartDetail> FindCartDetail(long cartDetailId, long cartHeaderId)
+        public async Task<CartDetail> FindCartDetailNoTracking(long cartDetailId, long cartHeaderId)
         {
             var result = await _context.CartDetails.AsNoTracking().FirstOrDefaultAsync(p =>
                 p.Id == cartDetailId && p.CartHeaderId == cartHeaderId);
 
             return result;
+        }
+
+        public async Task<CartHeader> FindCartHeader(string userId)
+        {
+            return await _context.CartHeaders.FirstOrDefaultAsync(p =>
+                p.UserId == userId);
         }
 
         public Task<bool> RemoveCoupon(string userId)
@@ -89,6 +95,42 @@ namespace GeekShopping.CartApi.Repository
         public async Task UpdateCartDetail(CartDetail cartDetails)
         {
            _context.CartDetails.Update(cartDetails);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<CartDetail>> FindCartDetails(long cartHeaderId)
+        {
+            return _context.CartDetails.Where(c => c.CartHeaderId == cartHeaderId)
+                .Include(c => c.Product);
+        }
+
+        public async Task<CartDetail> FindCartDetail(long cartDetailId)
+        {
+            return await _context.CartDetails.FirstOrDefaultAsync(c => c.Id == cartDetailId);
+        }
+
+        public async Task RemoveCartDetail(CartDetail cartDetail)
+        {
+            _context.CartDetails.Remove(cartDetail);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<CartHeader> FindCartHeader(long cartHeaderId)
+        {
+            return await _context.CartHeaders.FirstOrDefaultAsync(c => c.Id == cartHeaderId);
+        }
+
+        public async Task RemoveCartHeader(CartHeader cartHeader)
+        {
+            _context.CartHeaders.Remove(cartHeader);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveCartDetailRange(long cartHeaderId)
+        {
+             _context.CartDetails.RemoveRange(_context.CartDetails.Where(c =>
+             c.CartHeaderId == cartHeaderId));
+
             await _context.SaveChangesAsync();
         }
     }
