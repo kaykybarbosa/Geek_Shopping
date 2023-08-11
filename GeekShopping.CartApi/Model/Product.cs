@@ -1,13 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using GeekShopping.CartApi.Model.Base;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekShopping.CartApi.Model
 {
     [Table("PRODUCTS")]
-    public class Product : BaseEntity
+    public class Product
     {
+        [Column("ID")]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public long Id { get; set; }
+
         [Required]
         [MaxLength(150)]
         [Column("NANE")]
