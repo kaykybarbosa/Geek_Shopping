@@ -86,10 +86,11 @@ namespace GeekShopping.CartApi.Services
                 var headerId = cartHeader.Id;
 
                 var cartDetails = await _cartRepository.FindCartDetailNoTracking(detailtId, headerId);
+                
                 if(cartDetails == null)
                 {
                     //Create CartDetails
-                    cart.CartDetails.FirstOrDefault().CartHeaderId = cart.CartHeader.Id;
+                    cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
                     cart.CartDetails.FirstOrDefault().Product = null;
 
                     var cartDetailSaved = cart.CartDetails.FirstOrDefault();

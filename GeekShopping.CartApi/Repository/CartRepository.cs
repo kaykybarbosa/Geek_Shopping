@@ -51,10 +51,10 @@ namespace GeekShopping.CartApi.Repository
             return product;
         }
 
-        public async Task<CartDetail> FindCartDetailNoTracking(long cartDetailId, long cartHeaderId)
+        public async Task<CartDetail> FindCartDetailNoTracking(long cartDetailProductId, long cartHeaderId)
         {
             var result = await _context.CartDetails.AsNoTracking().FirstOrDefaultAsync(p =>
-                p.Id == cartDetailId && p.CartHeaderId == cartHeaderId);
+                p.ProductId == cartDetailProductId && p.CartHeaderId == cartHeaderId);
 
             return result;
         }

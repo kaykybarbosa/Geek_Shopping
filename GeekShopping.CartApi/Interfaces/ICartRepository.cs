@@ -13,7 +13,7 @@ namespace GeekShopping.CartApi.Interfaces
 
         Task<CartDetail> FindCartDetail(long cartDetailId);
         Task<IEnumerable<CartDetail>> FindCartDetails(long cartHeaderId);
-        Task<CartDetail> FindCartDetailNoTracking(long cartDetailId, long cartHeaderId);
+        Task<CartDetail> FindCartDetailNoTracking(long cartDetailProductId, long cartHeaderId);
 
         Task CreateProduct(Product product);
         Task CreateCartHeader(CartHeader cartHeader);

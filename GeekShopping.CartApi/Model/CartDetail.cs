@@ -6,14 +6,17 @@ namespace GeekShopping.CartApi.Model
     [Table("CART_DETAIL")]
     public class CartDetail : BaseEntity
     {
+
+        [Column("CART_HEADER_ID")]
         public long CartHeaderId { get; set; }
 
-        [ForeignKey("CART_HEADER_ID")]
+        [ForeignKey("CartHeaderId")]
         public virtual CartHeader CartHeader { get; set; }
 
+        [Column("PRODUCT_ID")]
         public long ProductId { get; set; }
 
-        [ForeignKey("PRODUCT_ID")]
+        [ForeignKey("ProductId")]
         public virtual Product Product { get; set; }
 
         [Column("COUNT")]

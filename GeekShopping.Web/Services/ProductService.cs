@@ -8,55 +8,55 @@ namespace GeekShopping.Web.Services
     public class ProductService : IProductService
     {
         private readonly HttpClient _client;
-        public string BasePath = "api/v1/Product";
+        public string BasePath = "api/v1/Product/";
 
         public ProductService(HttpClient client)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
         }
 
-        public async Task<IEnumerable<ProductModel>> FindAllProducts(string token)
+        public async Task<IEnumerable<ProductViewModel>> FindAllProducts(string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            BasePath = $"{BasePath}/all-products";
+            BasePath += "all-products";
             var response = await _client.GetAsync(BasePath);
 
-            return await response.ReadContentAs<IEnumerable<ProductModel>>();
+            return await response.ReadContentAs<IEnumerable<ProductViewModel>>();
         }
         
-        public async Task<ProductModel> FindProductById(long id, string token)
+        public async Task<ProductViewModel> FindProductById(long id, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            BasePath = $"{BasePath}/find-product/{id}";
+            BasePath += $"find-product/{id}";
             var response = await _client.GetAsync(BasePath);
 
-            return await response.ReadContentAs<ProductModel>();
+            return await response.ReadContentAs<ProductViewModel>();
         }
         
-        public async Task<ProductModel> CreateProduct(ProductModel product, string token)
+        public async Task<ProductViewModel> CreateProduct(ProductViewModel product, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            BasePath = $"{BasePath}/create-product";
+            BasePath += "create-product";
             var response = await _client.PostAsJson(BasePath, product);
 
             if (response.IsSuccessStatusCode)
-                return await response.ReadContentAs<ProductModel>();
+                return await response.ReadContentAs<ProductViewModel>();
 
             else throw new Exception($"Something went wrong when calling API: {response.ReasonPhrase}");
         }
 
-        public async Task<ProductModel> UpdateProduct(ProductModel product, string token)
+        public async Task<ProductViewModel> UpdateProduct(ProductViewModel product, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            BasePath = $"{BasePath}/update-product";
+            BasePath += "update-product";
             var response = await _client.PutAsJson(BasePath, product);
 
             if (response.IsSuccessStatusCode)
-                return await response.ReadContentAs<ProductModel>();
+                return await response.ReadContentAs<ProductViewModel>();
 
             else throw new Exception($"Something went wrong when calling API: {response.ReasonPhrase}");
         }
@@ -65,7 +65,7 @@ namespace GeekShopping.Web.Services
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            BasePath = $"{BasePath}/delete-product/ {id}";
+            BasePath += $"delete-product/ {id}";
             var response = await _client.DeleteAsync(BasePath);
 
             if (response.IsSuccessStatusCode)
