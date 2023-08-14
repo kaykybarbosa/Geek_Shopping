@@ -3,6 +3,7 @@ using GeekShopping.CartApi.Model.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GeekShopping.CartApi.Migrations
 {
     [DbContext(typeof(MySqlContextCart))]
-    partial class MySqlContextCartModelSnapshot : ModelSnapshot
+    [Migration("20230814143835_UpdatingTableOnDbSecound")]
+    partial class UpdatingTableOnDbSecound
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
