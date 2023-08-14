@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace GeekShopping.Web.Models
 {
-    public class ProductModel 
+    public class ProductViewModel 
     {
         public long Id { get; set; }
         public String Name { get; set; }
