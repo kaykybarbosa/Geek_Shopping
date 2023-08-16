@@ -16,11 +16,11 @@ namespace GeekShopping.CartApi.Controllers
         }
 
         [HttpGet("find-cart/{id}")]
-        public async Task<IActionResult> FindCartById(string userId)
+        public async Task<IActionResult> FindCartById(string id)
         {
             if (ModelState.IsValid)
             {
-                var result = await _cartService.FindCartByUserId(userId);
+                var result = await _cartService.FindCartByUserId(id);
 
                 if(result == null) return NotFound();
 
@@ -61,13 +61,49 @@ namespace GeekShopping.CartApi.Controllers
         }
                
         [HttpDelete("remove-cart/{id}")]
-        public async Task<IActionResult> RemoveCart(long userId )
+        public async Task<IActionResult> RemoveCart(long id)
         {
             if (ModelState.IsValid)
             {
-                var result = await _cartService.RemoveFromCart(userId);
+                var result = await _cartService.RemoveFromCart(id);
 
                 if (!result) return NotFound();
+
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost("apply-coupon")]
+        public async Task<IActionResult> ApplyCoupon(CartRequest cartRequest)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _cartService.ApplyCoupon(cartRequest.CartHeader.UserId, cartRequest.CartHeader.CouponCode);
+
+                if (!result)
+                {
+                    return NotFound();
+                }
+
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+        
+        [HttpDelete("remove-coupon/{userId}")]
+        public async Task<IActionResult> RemoveCoupon(string userId)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _cartService.RemoveCoupon(userId);
+
+                if (!result)
+                {
+                    return NotFound();
+                }
 
                 return Ok(result);
             }

@@ -14,25 +14,10 @@ namespace GeekShopping.CartApi.Repository
             _context = context;
         }
 
-        public Task<bool> ApplyCoupon(string userId, string couponCode)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> ClearCart(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task CreateProduct(Product product)
         {
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
-        }
-
-        public Task<Cart> FindCartByUserId(string userId)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<CartHeader> FindCartHeaderNoTracking(string userId)
@@ -65,25 +50,10 @@ namespace GeekShopping.CartApi.Repository
                 p.UserId == userId);
         }
 
-        public Task<bool> RemoveCoupon(string userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> RemoveFromCart(long cartDetailsId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task CreateCartHeader(CartHeader cartHeader)
         {
             _context.CartHeaders.Add(cartHeader);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task<Cart> SaveOrDeleteCart(Cart cart)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task CreateCartDetails(CartDetail cartDetail)
@@ -95,6 +65,12 @@ namespace GeekShopping.CartApi.Repository
         public async Task UpdateCartDetail(CartDetail cartDetails)
         {
            _context.CartDetails.Update(cartDetails);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateHeader(CartHeader cartHeader)
+        {
+            _context.CartHeaders.Update(cartHeader);
             await _context.SaveChangesAsync();
         }
 

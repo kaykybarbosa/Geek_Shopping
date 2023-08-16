@@ -18,19 +18,12 @@ namespace GeekShopping.CartApi.Interfaces
         Task CreateProduct(Product product);
         Task CreateCartHeader(CartHeader cartHeader);
         Task CreateCartDetails(CartDetail cartDetail);
+
+        Task UpdateHeader(CartHeader cartHeader);
         Task UpdateCartDetail(CartDetail cartDetails);
 
         Task RemoveCartDetail(CartDetail cartDetail);
         Task RemoveCartHeader(CartHeader cartHeader);
         Task RemoveCartDetailRange(long cartHeaderId);
-
-
-
-        Task<Cart> FindCartByUserId(string userId);
-        Task<Cart> SaveOrDeleteCart(Cart cart);
-        Task<bool> RemoveFromCart(long cartDetailsId);
-        Task<bool> ApplyCoupon(string userId, string couponCode);
-        Task<bool> RemoveCoupon(string userId);
-        Task<bool> ClearCart(string userId);
     }
 }
