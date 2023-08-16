@@ -4,6 +4,6 @@ namespace GeekShopping.Web.Interfaces
 {
     public interface ICouponService
     {
-        Task<CouponViewModel> GetCouponByCouponCode(string couponCode);
+        Task<CouponViewModel> GetCoupon(string code, string token);
     }
 }

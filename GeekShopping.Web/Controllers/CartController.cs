@@ -3,16 +3,19 @@ using GeekShopping.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Permissions;
 
 namespace GeekShopping.Web.Controllers
 {
     public class CartController : Controller
     {
         private readonly ICartService _cartService;
+        private readonly ICouponService _couponService;
 
-        public CartController(ICartService cartService)
+        public CartController(ICartService cartService, ICouponService couponService)
         {
             _cartService = cartService;
+            _couponService = couponService;
         }
 
         [Authorize]
@@ -77,6 +80,16 @@ namespace GeekShopping.Web.Controllers
 
             if (response?.CartHeader != null)
             {
+                var coupon = response.CartHeader.CouponCode;
+                if (!string.IsNullOrEmpty(coupon))
+                {
+                    var resultCoupon = await _couponService.GetCoupon(coupon, token);
+                    if(resultCoupon?.CouponCode != null)
+                    {
+                        response.CartHeader.DiscountAmount = resultCoupon.DiscountAmount;
+                    }
+                }
+
                 foreach (var detail in response.CartDetails)
                 {
                     var price = detail.Product.Price;
@@ -84,6 +97,8 @@ namespace GeekShopping.Web.Controllers
 
                     response.CartHeader.PurchaseAmount += (price * count);
                 }
+
+                response.CartHeader.PurchaseAmount -= response.CartHeader.DiscountAmount;
             }
 
             return response;
