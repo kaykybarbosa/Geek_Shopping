@@ -17,13 +17,34 @@ namespace GeekShopping.CartApi.Services
             _mapper = mapper;
         }
 
-        public Task<bool> ApplyCoupon(string userId, string couponCode)
+        public async Task<bool> ApplyCoupon(string userId, string couponCode)
         {
-            throw new NotImplementedException();
+            var header = await _cartRepository.FindCartHeader(userId);
+
+            if(header != null) 
+            {
+                header.CouponCode = couponCode;
+                await _cartRepository.UpdateHeader(header);
+
+                return true;
+            }
+
+            return false;
         }
-        public Task<bool> RemoveCoupon(string userId)
+
+        public async Task<bool> RemoveCoupon(string userId)
         {
-            throw new NotImplementedException();
+            var header = await _cartRepository.FindCartHeader(userId);
+
+            if (header != null)
+            {
+                header.CouponCode = "";
+                await _cartRepository.UpdateHeader(header);
+
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<bool> ClearCart(string userId)
