@@ -1,6 +1,8 @@
 using GeekShopping.CartApi.Dtos.Request;
 using GeekShopping.CartApi.Interfaces;
+using GeekShopping.CartApi.Messages;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 
 namespace GeekShopping.CartApi.Controllers
 {
@@ -106,6 +108,27 @@ namespace GeekShopping.CartApi.Controllers
                 }
 
                 return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPost("checkout")]
+        public async Task<IActionResult> Checkout(CheckoutHeaderDto dto)
+        {
+            if (ModelState.IsValid)
+            {
+                var cart = await _cartService.FindCartByUserId(dto.UserId);
+                if(cart == null)
+                {
+                    return NotFound();
+                }
+                
+                //RabbitMq here
+
+                dto.CartDetails = cart.CartDetails;
+
+                return Ok(dto);
             }
 
             return BadRequest();

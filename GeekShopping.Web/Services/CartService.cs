@@ -99,14 +99,24 @@ namespace GeekShopping.Web.Services
 
             throw new Exception("Somethin went wrong when calling API.");
         }
+
+        public async Task<CartHeaderViewModel> Checkout(CartHeaderViewModel cartHeader, string token)
+        {
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            BasePath += "checkout";
+            var response = await _client.PostAsJson($"{BasePath}", cartHeader);
+            
+            if (response.IsSuccessStatusCode) 
+            {
+                return await response.ReadContentAs<CartHeaderViewModel>();
+            }
+
+            throw new Exception("Somethin went wrong when calling API.");
+        }
         
         //
         public Task<bool> ClearCart(string userId, string token)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CartViewModel> Checkout(CartHeaderViewModel cartHeader, string token)
         {
             throw new NotImplementedException();
         }
