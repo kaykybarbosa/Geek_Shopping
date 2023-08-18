@@ -82,8 +82,8 @@ namespace GeekShopping.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Checkout(CartViewModel cart)
         {
-            string token = await HttpContext.GetTokenAsync("accss_token");
-            
+            var token = await HttpContext.GetTokenAsync("access_token");
+
             var response = await _cartService.Checkout(cart.CartHeader, token);
             if(response != null)
             {
@@ -100,7 +100,7 @@ namespace GeekShopping.Web.Controllers
 
         private async Task<CartViewModel> FindUserCart()
         {
-            string token = await HttpContext.GetTokenAsync("access_token");
+            var token = await HttpContext.GetTokenAsync("access_token");
             var userId = User.Claims.Where(u => u.Type == "sub")?.FirstOrDefault()?.Value;
 
             var response = await _cartService.FindCartByUserId(userId, token);

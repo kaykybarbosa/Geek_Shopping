@@ -2,7 +2,6 @@ using GeekShopping.CartApi.Dtos.Request;
 using GeekShopping.CartApi.Interfaces;
 using GeekShopping.CartApi.Messages;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.RegularExpressions;
 
 namespace GeekShopping.CartApi.Controllers
 {
@@ -11,10 +10,12 @@ namespace GeekShopping.CartApi.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
+        private readonly IRabbitMQMessageSender _rabbitMQMessageSender;
 
-        public CartController(ICartService cartService)
+        public CartController(ICartService cartService, IRabbitMQMessageSender rabbitMQMessageSender)
         {
             _cartService = cartService ?? throw new ArgumentNullException(nameof(cartService));
+            _rabbitMQMessageSender = rabbitMQMessageSender ?? throw new ArgumentNullException(nameof(rabbitMQMessageSender));
         }
 
         [HttpGet("find-cart/{id}")]
@@ -118,15 +119,18 @@ namespace GeekShopping.CartApi.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(dto?.UserId == null) return BadRequest();
+
                 var cart = await _cartService.FindCartByUserId(dto.UserId);
                 if(cart == null)
                 {
                     return NotFound();
                 }
-                
-                //RabbitMq here
 
                 dto.CartDetails = cart.CartDetails;
+                dto.DateTime = DateTime.Now;
+
+                _rabbitMQMessageSender.SendMessage(dto, "checkoutqueue");
 
                 return Ok(dto);
             }
