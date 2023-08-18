@@ -1,4 +1,5 @@
-﻿using GeekShopping.CartApi.Interfaces;
+﻿using GeekShopping.CartApi.Dtos.Response.Message;
+using GeekShopping.CartApi.Interfaces;
 using GeekShopping.CartApi.Messages;
 using GeekShopping.MessageBus;
 using RabbitMQ.Client;
@@ -17,8 +18,8 @@ namespace GeekShopping.CartApi.Services
         public RabbitMQMessageSender()
         {
             _hostName = "localhost";
-            _password = "guest";
             _userName = "guest";
+            _password = "guest";
         }
 
         public void SendMessage(BaseMessage message, string queueName)
@@ -47,7 +48,7 @@ namespace GeekShopping.CartApi.Services
                 WriteIndented = true,
             };
 
-            var json = JsonSerializer.Serialize<CheckoutHeaderDto>((CheckoutHeaderDto) message, options);
+            var json = JsonSerializer.Serialize<CheckoutHeaderResponse>((CheckoutHeaderResponse) message, options);
 
             return Encoding.UTF8.GetBytes(json);
         }

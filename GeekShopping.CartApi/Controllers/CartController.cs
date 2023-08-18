@@ -1,4 +1,5 @@
 using GeekShopping.CartApi.Dtos.Request;
+using GeekShopping.CartApi.Dtos.Response.Message;
 using GeekShopping.CartApi.Interfaces;
 using GeekShopping.CartApi.Messages;
 using Microsoft.AspNetCore.Mvc;
@@ -115,7 +116,7 @@ namespace GeekShopping.CartApi.Controllers
         }
 
         [HttpPost("checkout")]
-        public async Task<IActionResult> Checkout(CheckoutHeaderDto dto)
+        public async Task<IActionResult> Checkout(CheckoutHeaderResponse dto)
         {
             if (ModelState.IsValid)
             {
