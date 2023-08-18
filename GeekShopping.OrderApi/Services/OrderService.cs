@@ -1,7 +1,7 @@
 ﻿using GeekShopping.OrderApi.Interfaces;
 using GeekShopping.OrderApi.Model;
 
-namespace GeekShopping.OrderApi.Service
+namespace GeekShopping.OrderApi.Services
 {
     public class OrderService : IOrderService
     {
