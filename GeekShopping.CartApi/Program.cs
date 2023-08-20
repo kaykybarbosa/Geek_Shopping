@@ -1,9 +1,12 @@
 using AutoMapper;
 using GeekShopping.CartApi.Config;
 using GeekShopping.CartApi.Interfaces;
+using GeekShopping.CartApi.Interfaces.IRepositories;
+using GeekShopping.CartApi.Interfaces.IServices;
 using GeekShopping.CartApi.Model.Context;
-using GeekShopping.CartApi.Repository;
+using GeekShopping.CartApi.Repository.CartRepository;
 using GeekShopping.CartApi.Services;
+using GeekShopping.CartApi.Services.CartService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
