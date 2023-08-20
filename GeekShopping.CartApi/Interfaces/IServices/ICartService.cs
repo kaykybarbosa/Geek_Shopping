@@ -1,7 +1,7 @@
 ﻿using GeekShopping.CartApi.Dtos.Request;
 using GeekShopping.CartApi.Dtos.Response;
 
-namespace GeekShopping.CartApi.Interfaces
+namespace GeekShopping.CartApi.Interfaces.IServices
 {
     public interface ICartService
     {

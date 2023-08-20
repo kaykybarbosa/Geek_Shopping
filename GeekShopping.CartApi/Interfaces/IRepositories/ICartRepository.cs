@@ -1,7 +1,7 @@
 ﻿using GeekShopping.CartApi.Dtos.Request;
 using GeekShopping.CartApi.Model;
 
-namespace GeekShopping.CartApi.Interfaces
+namespace GeekShopping.CartApi.Interfaces.IRepositories
 {
     public interface ICartRepository
     {

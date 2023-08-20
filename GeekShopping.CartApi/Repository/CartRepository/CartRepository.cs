@@ -1,9 +1,9 @@
-﻿using GeekShopping.CartApi.Interfaces;
+﻿using GeekShopping.CartApi.Interfaces.IRepositories;
 using GeekShopping.CartApi.Model;
 using GeekShopping.CartApi.Model.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace GeekShopping.CartApi.Repository
+namespace GeekShopping.CartApi.Repository.CartRepository
 {
     public class CartRepository : ICartRepository
     {
@@ -64,7 +64,7 @@ namespace GeekShopping.CartApi.Repository
 
         public async Task UpdateCartDetail(CartDetail cartDetails)
         {
-           _context.CartDetails.Update(cartDetails);
+            _context.CartDetails.Update(cartDetails);
             await _context.SaveChangesAsync();
         }
 
@@ -104,8 +104,8 @@ namespace GeekShopping.CartApi.Repository
 
         public async Task RemoveCartDetailRange(long cartHeaderId)
         {
-             _context.CartDetails.RemoveRange(_context.CartDetails.Where(c =>
-             c.CartHeaderId == cartHeaderId));
+            _context.CartDetails.RemoveRange(_context.CartDetails.Where(c =>
+            c.CartHeaderId == cartHeaderId));
 
             await _context.SaveChangesAsync();
         }
