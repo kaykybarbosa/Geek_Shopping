@@ -28,7 +28,7 @@ namespace GeekShopping.OrderApi.Model
         public DateTime DateTime { get; set; } 
         
         [Column("ORDER_TIME")]
-        public DateTime ORDER_TIME { get; set; }
+        public DateTime OrderTime { get; set; }
         
         [Column("PHONE_NUMBER")]
         public string Phone { get; set; }
@@ -46,9 +46,9 @@ namespace GeekShopping.OrderApi.Model
         public string ExpiryMonthYear { get; set; }
         
         [Column("TOTAL_ITENS")]
-        public int ORderTotalItens { get; set; }
+        public int CartTotalItens { get; set; }
 
-        public IEnumerable<OrderDetail> CartDetails { get; set; }
+        public List<OrderDetail> OrderDetails { get; set; }
 
         [Column("PAYMENT_STATUS")]
         public bool PaymentStatus { get; set; }

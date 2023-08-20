@@ -14,7 +14,7 @@ namespace GeekShopping.OrderApi.Repository
             _context = context;
         }
 
-        public async Task<bool> AddOrder(OrderHeader header)
+        public async Task<bool> AddOrderHeader(OrderHeader header)
         {
             await using var _db = new MySqlContextOrder(_context);
 

@@ -12,11 +12,11 @@ namespace GeekShopping.OrderApi.Services
             _orderRepository = repository;
         }
 
-        public async Task<bool> AddOrder(OrderHeader header)
+        public async Task<bool> AddOrderHeader(OrderHeader header)
         {
             if(header != null)
             {
-                return await _orderRepository.AddOrder(header);
+                return await _orderRepository.AddOrderHeader(header);
             }
             
             return false;

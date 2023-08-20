@@ -1,7 +1,6 @@
 using GeekShopping.CartApi.Dtos.Request;
 using GeekShopping.CartApi.Dtos.Response.Message;
 using GeekShopping.CartApi.Interfaces;
-using GeekShopping.CartApi.Messages;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShopping.CartApi.Controllers

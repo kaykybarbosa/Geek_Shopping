@@ -1,6 +1,5 @@
 ﻿using GeekShopping.CartApi.Dtos.Response.Message;
 using GeekShopping.CartApi.Interfaces;
-using GeekShopping.CartApi.Messages;
 using GeekShopping.MessageBus;
 using RabbitMQ.Client;
 using System.Text;
