@@ -3,7 +3,6 @@ using GeekShopping.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Permissions;
 
 namespace GeekShopping.Web.Controllers
 {
