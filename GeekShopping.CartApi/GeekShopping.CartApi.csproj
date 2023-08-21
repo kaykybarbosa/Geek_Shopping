@@ -28,4 +28,8 @@
 	  <ProjectReference Include="..\GeekShopping.MessageBus\GeekShopping.MessageBus.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Model\Coupon\" />
+	</ItemGroup>
+
 </Project>

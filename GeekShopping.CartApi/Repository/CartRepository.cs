@@ -3,7 +3,7 @@ using GeekShopping.CartApi.Model;
 using GeekShopping.CartApi.Model.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace GeekShopping.CartApi.Repository.CartRepository
+namespace GeekShopping.CartApi.Repository
 {
     public class CartRepository : ICartRepository
     {

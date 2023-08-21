@@ -4,11 +4,11 @@ using GeekShopping.CartApi.Interfaces;
 using GeekShopping.CartApi.Interfaces.IRepositories;
 using GeekShopping.CartApi.Interfaces.IServices;
 using GeekShopping.CartApi.Model.Context;
-using GeekShopping.CartApi.Repository.CartRepository;
+using GeekShopping.CartApi.Repository;
 using GeekShopping.CartApi.Services;
 using GeekShopping.CartApi.Services.CartService;
+using GeekShopping.CartApi.Services.CouponService;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -28,6 +28,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
+
+var uriCouponApi = builder.Configuration["ServiceUrl:CouponApi"];
+builder.Services.AddHttpClient<ICouponService, CouponService>(s => s.BaseAddress = new Uri(uriCouponApi));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
