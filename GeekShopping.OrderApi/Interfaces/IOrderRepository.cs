@@ -7,5 +7,6 @@ namespace GeekShopping.OrderApi.Interfaces
         Task<OrderHeader> GetOrderHeaderById(long id);
         Task<bool> AddOrderHeader(OrderHeader header);
         Task UpdateOrderPaymentStatus(OrderHeader header);
+        Task UpdateOrderPaymentStatus(long orderHeaderid, bool status);
     }
 }

@@ -1,11 +1,11 @@
-﻿using GeekShopping.CartApi.Dtos.Request.Message;
-using GeekShopping.CartApi.Interfaces;
-using GeekShopping.MessageBus;
+﻿using GeekShopping.MessageBus;
+using GeekShopping.OrderApi.Dtos.Response.Payment.Response;
+using GeekShopping.OrderApi.Interfaces.MessageSenfer;
 using RabbitMQ.Client;
 using System.Text;
 using System.Text.Json;
 
-namespace GeekShopping.CartApi.Services
+namespace GeekShopping.OrderApi.Services.MessageSender
 {
     public class RabbitMQMessageSender : IRabbitMQMessageSender
     {
@@ -38,13 +38,12 @@ namespace GeekShopping.CartApi.Services
 
         private byte[] GetMessageAsByteArray(BaseMessage message)
         {
-            //Serializer all attributes
             var options = new JsonSerializerOptions
             {
                 WriteIndented = true,
             };
 
-            var json = JsonSerializer.Serialize<CheckoutHeaderRequest>((CheckoutHeaderRequest) message, options);
+            var json = JsonSerializer.Serialize((PaymentResponse)message, options);
 
             return Encoding.UTF8.GetBytes(json);
         }
@@ -68,4 +67,4 @@ namespace GeekShopping.CartApi.Services
             }
         }
     }
-} 
+}

@@ -38,5 +38,17 @@ namespace GeekShopping.OrderApi.Repository
             _db.Headers.Update(header);
             await _db.SaveChangesAsync();
         }
+
+        public async Task UpdateOrderPaymentStatus(long orderHeaderid, bool status)
+        {
+            await using var _db = new MySqlContextOrder(_context);
+            
+            var order = await _db.Headers.FirstOrDefaultAsync(o => o.Id == orderHeaderid);
+            if(order != null){
+                order.PaymentStatus = status;
+                
+                await _db.SaveChangesAsync();
+            }
+        }
     }
 }

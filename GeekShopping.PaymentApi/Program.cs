@@ -1,9 +1,7 @@
-using GeekShopping.OrderApi.Interfaces.MessageSenfer;
-using GeekShopping.OrderApi.Model.Context;
-using GeekShopping.OrderApi.Repository;
-using GeekShopping.OrderApi.Services;
-using GeekShopping.OrderApi.Services.MessageSender;
-using Microsoft.EntityFrameworkCore;
+using GeekShopping.PaymentApi.Interfaces;
+using GeekShopping.PaymentApi.Services;
+using GeekShopping.PaymentApi.Services.MessageSender;
+using GeekShopping.PaymentProcessor;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -11,23 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
-var connection = builder.Configuration.GetConnectionString("ConnectionStringSql");
-builder.Services.AddDbContext<MySqlContextOrder>(options => options.UseSqlServer(connection));
-
-//Dependency Injections
-var builderOption = new DbContextOptionsBuilder<MySqlContextOrder>();
-builderOption.UseSqlServer(connection);
-
-builder.Services.AddSingleton(new OrderRepository(builderOption.Options));
-builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
+// Dependency injections
 builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
-
+builder.Services.AddSingleton<IProcessPayment, ProcessPayment>();
 builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
 
-//Configure Security
+// Configure Authentications
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
@@ -49,7 +40,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.OrderApi", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.PaymentApi", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "Enter 'Bearer' [space] and you token!",

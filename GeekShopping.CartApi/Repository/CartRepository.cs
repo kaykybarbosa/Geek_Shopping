@@ -47,7 +47,7 @@ namespace GeekShopping.CartApi.Repository
         public async Task<CartHeader> FindCartHeader(string userId)
         {
             return await _context.CartHeaders.FirstOrDefaultAsync(p =>
-                p.UserId == userId);
+                p.UserId == userId) ?? new CartHeader();
         }
 
         public async Task CreateCartHeader(CartHeader cartHeader)

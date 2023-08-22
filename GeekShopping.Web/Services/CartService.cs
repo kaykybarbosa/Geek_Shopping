@@ -60,7 +60,7 @@ namespace GeekShopping.Web.Services
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             BasePath += $"remove-cart/{userId}";
-            var response = await _client.DeleteAsync($"{BasePath}/{userId}");
+            var response = await _client.DeleteAsync(BasePath);
 
             if (response.IsSuccessStatusCode)
             {

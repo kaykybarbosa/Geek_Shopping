@@ -1,6 +1,6 @@
 using GeekShopping.CartApi.Dtos.Request;
+using GeekShopping.CartApi.Dtos.Request.Message;
 using GeekShopping.CartApi.Dtos.Response.Coupon;
-using GeekShopping.CartApi.Dtos.Response.Message;
 using GeekShopping.CartApi.Interfaces;
 using GeekShopping.CartApi.Interfaces.IServices;
 using Microsoft.AspNetCore.Authentication;
@@ -120,36 +120,33 @@ namespace GeekShopping.CartApi.Controllers
         }
 
         [HttpPost("checkout")]
-        public async Task<IActionResult> Checkout(CheckoutHeaderResponse dto)
+        public async Task<IActionResult> Checkout(CheckoutHeaderRequest request)
         {
             if (ModelState.IsValid)
             {
-                if(dto?.UserId == null) return BadRequest();
-
                 var token = await HttpContext.GetTokenAsync("access_token");
 
-                var cart = await _cartService.FindCartByUserId(dto.UserId);
-                if(cart == null)
-                {
-                    return NotFound();
-                }
-
-                var coupon = dto.CouponCode;
+                var coupon = request.CouponCode;
                 if (!string.IsNullOrEmpty(coupon))
                 {
                     CouponResponse response = await _couponService.GetCouponByCouponCode(coupon, token);
-                    if(response.DiscountAmount != dto.DiscountAmount)
+                    if(response.DiscountAmount != request.DiscountAmount)
                     {
                         return StatusCode(412);
                     }
                 }
 
-                dto.CartDetails = cart.CartDetails;
-                dto.DateTime = DateTime.Now;
+                var cart = await _cartService.FindCartByUserId(request.UserId);
+                if(cart == null) return NotFound();
 
-                _rabbitMQMessageSender.SendMessage(dto, "checkoutqueue");
+                request.CartDetails = cart.CartDetails;
+                request.DateTime = DateTime.Now;
 
-                return Ok(dto);
+                _rabbitMQMessageSender.SendMessage(request, "checkoutqueue");
+
+                await _cartService.ClearCart(request.UserId);
+
+                return Ok(request);
             }
 
             return BadRequest();

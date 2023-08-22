@@ -1,8 +1,9 @@
-﻿using GeekShopping.MessageBus;
+﻿using GeekShopping.CartApi.Dtos.Response;
+using GeekShopping.MessageBus;
 
-namespace GeekShopping.CartApi.Dtos.Response.Message
+namespace GeekShopping.CartApi.Dtos.Request.Message
 {
-    public class CheckoutHeaderResponse : BaseMessage
+    public class CheckoutHeaderRequest : BaseMessage
     {
         public string UserId { get; set; }
         public string CouponCode { get; set; }
