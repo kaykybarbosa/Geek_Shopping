@@ -1,9 +1,7 @@
-using AutoMapper;
-using GeekShopping.Config;
-using GeekShopping.Interfaces;
-using GeekShopping.Model.Context;
-using GeekShopping.Repositories;
-using GeekShopping.Services;
+using GeekShopping.Email.Interfaces;
+using GeekShopping.Email.Model.Context;
+using GeekShopping.Email.Repositories;
+using GeekShopping.Email.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -12,31 +10,30 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
-
-var connection = builder.Configuration.GetConnectionString("ConnectionStringSql");
-builder.Services.AddDbContext<MySqlContext>(options => options.UseSqlServer(connection));
-
-IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
-builder.Services.AddSingleton(mapper);
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 
+var connection = builder.Configuration.GetConnectionString("ConnectionStringSql");
+builder.Services.AddDbContext<MySqlContextEmail>(options => options.UseSqlServer(connection));
 
-//Security Configuration
+//Injections
+var builderOption = new DbContextOptionsBuilder<MySqlContextEmail>();
+builderOption.UseSqlServer(connection);
+builder.Services.AddSingleton(new EmailRepository(builderOption.Options));
+
+builder.Services.AddScoped<IEmailRepository, EmailRepository>();
+builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
+
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
         options.Authority = builder.Configuration["Address:IdentityServer"];
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateAudience = false 
+            ValidateAudience = false
         };
     });
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ApiScope", policy =>
@@ -48,9 +45,8 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.ProductApi" });
-    c.EnableAnnotations();
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme 
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShopping.Email", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "Enter 'Bearer' [space] and you token!",
         Name = "Authorization",
@@ -76,7 +72,6 @@ builder.Services.AddSwaggerGen(c =>
             new List<string>()
         }
     });
-
 });
 
 var app = builder.Build();
@@ -89,7 +84,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

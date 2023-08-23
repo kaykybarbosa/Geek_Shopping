@@ -1,11 +1,10 @@
-﻿using GeekShopping.Dtos.Request.Update;
-using GeekShopping.Dtos.Request;
+﻿using GeekShopping.Dtos.Request;
+using GeekShopping.Dtos.Request.Update;
 using GeekShopping.Dtos.Response;
 using GeekShopping.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using GeekShopping.ProductApi.Utils;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShopping.Controllers
 {
