@@ -1,6 +1,6 @@
-﻿namespace GeekShopping.OrderApi.Dtos.Response.Payment.Request
+﻿namespace GeekShopping.OrderApi.Dtos.Request
 {
-    public class PaymentRequest 
+    public class PaymentRequest
     {
         public long OrderId { get; set; }
         public string Name { get; set; }

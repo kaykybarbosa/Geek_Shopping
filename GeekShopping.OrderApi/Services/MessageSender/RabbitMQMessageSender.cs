@@ -1,5 +1,5 @@
 ﻿using GeekShopping.MessageBus;
-using GeekShopping.OrderApi.Dtos.Response.Payment.Response;
+using GeekShopping.OrderApi.Dtos.Response.Payment;
 using GeekShopping.OrderApi.Interfaces.MessageSenfer;
 using RabbitMQ.Client;
 using System.Text;

@@ -1,9 +1,9 @@
 ﻿using GeekShopping.MessageBus;
-using RabbitMQ.Client;
-using System.Text.Json;
-using System.Text;
-using GeekShopping.PaymentApi.Interfaces;
 using GeekShopping.PaymentApi.Dtos;
+using GeekShopping.PaymentApi.Interfaces;
+using RabbitMQ.Client;
+using System.Text;
+using System.Text.Json;
 
 namespace GeekShopping.PaymentApi.Services.MessageSender
 {
@@ -13,6 +13,9 @@ namespace GeekShopping.PaymentApi.Services.MessageSender
         private readonly string _password;
         private readonly string _userName;
         private IConnection _connection;
+        private const string ExchangeName = "DirectPaymentUpdateExchage";
+        private const string PaymentEmailUpdateQueueName = "PaymentEmailUpdateQueueName";
+        private const string PaymentOrderUpdateQueueName = "PaymentOrderUpdateQueueName";
 
         public RabbitMQMessageSender()
         {
@@ -21,19 +24,26 @@ namespace GeekShopping.PaymentApi.Services.MessageSender
             _password = "guest";
         }
 
-        public void SendMessage(BaseMessage message, string queueName)
+        public void SendMessage(BaseMessage message)
         {
             if (_connection == null)
             {
                 CreateConnection();
             }
-
             using var channel = _connection.CreateModel();
-            channel.QueueDeclare(queue: queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+
+            channel.ExchangeDeclare(ExchangeName, ExchangeType.Direct, durable: false); // durable: false => will be removed afeter being read
+
+            channel.QueueDeclare(PaymentEmailUpdateQueueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+            channel.QueueDeclare(PaymentOrderUpdateQueueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+
+            channel.QueueBind(PaymentEmailUpdateQueueName, exchange: ExchangeName, routingKey: "PaymentEmail");
+            channel.QueueBind(PaymentOrderUpdateQueueName, exchange: ExchangeName, routingKey: "PaymentOrder");
 
             byte[] body = GetMessageAsByteArray(message);
 
-            channel.BasicPublish(exchange: "", routingKey: queueName, basicProperties: null, body: body);
+            channel.BasicPublish(exchange: ExchangeName, routingKey: "PaymentEmail", basicProperties: null, body: body);
+            channel.BasicPublish(exchange: ExchangeName, routingKey: "PaymentOrder", basicProperties: null, body: body);
         }
 
         private byte[] GetMessageAsByteArray(BaseMessage message)

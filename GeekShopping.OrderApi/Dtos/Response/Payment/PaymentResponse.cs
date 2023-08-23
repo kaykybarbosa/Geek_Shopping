@@ -1,6 +1,6 @@
 ﻿using GeekShopping.MessageBus;
 
-namespace GeekShopping.OrderApi.Dtos.Response.Payment.Response
+namespace GeekShopping.OrderApi.Dtos.Response.Payment
 {
     public class PaymentResponse : BaseMessage
     {
