@@ -26,10 +26,7 @@ namespace GeekShopping.Controllers
             {
                 var result = await _productService.FindAllProducts();
 
-                //if (result.IsSuccess)
-                    return Ok(result);
-
-                return BadRequest(result);
+                return Ok(result);
             }
 
             return StatusCode(500);
@@ -44,10 +41,8 @@ namespace GeekShopping.Controllers
             {
                 var result = await _productService.FindProductById(id);
 
-                //if (result.IsSuccess)
-                    return Ok(result);
+                return Ok(result);
 
-                return BadRequest(result);
             }
 
             return StatusCode(500);
@@ -62,10 +57,8 @@ namespace GeekShopping.Controllers
             {
                 var result = await _productService.CreateProduct(productDto);
 
-                //if (result.IsSuccess)
-                    return Ok(result);
+                return Ok(result);
 
-                return BadRequest(result);
             }
 
             return StatusCode(500);
@@ -79,10 +72,8 @@ namespace GeekShopping.Controllers
             {
                 var result = await _productService.UpdateProduct(productUpdateDto);
 
-                //if (result.IsSuccess)
-                    return Ok(result);
+                return Ok(result);
 
-                return BadRequest(result);
             }
 
             return StatusCode(500);
