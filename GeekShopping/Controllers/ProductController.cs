@@ -1,6 +1,5 @@
 ﻿using GeekShopping.Dtos.Request;
 using GeekShopping.Dtos.Request.Update;
-using GeekShopping.Dtos.Response;
 using GeekShopping.Interfaces;
 using GeekShopping.ProductApi.Utils;
 using Microsoft.AspNetCore.Authorization;
@@ -41,8 +40,10 @@ namespace GeekShopping.Controllers
             {
                 var result = await _productService.FindProductById(id);
 
-                return Ok(result);
-
+                if(result != null)
+                    return Ok(result);
+                
+                return NotFound();
             }
 
             return StatusCode(500);
@@ -57,8 +58,10 @@ namespace GeekShopping.Controllers
             {
                 var result = await _productService.CreateProduct(productDto);
 
-                return Ok(result);
+                if(result != null)
+                    return Ok(result);
 
+                return BadRequest();
             }
 
             return StatusCode(500);
@@ -72,8 +75,10 @@ namespace GeekShopping.Controllers
             {
                 var result = await _productService.UpdateProduct(productUpdateDto);
 
-                return Ok(result);
+                if(result != null)
+                    return Ok(result);
 
+                return BadRequest();
             }
 
             return StatusCode(500);
@@ -90,7 +95,7 @@ namespace GeekShopping.Controllers
                 if (result)
                     return Ok(result);
 
-                return BadRequest(result);
+                return BadRequest();
             }
 
             return StatusCode(500);
