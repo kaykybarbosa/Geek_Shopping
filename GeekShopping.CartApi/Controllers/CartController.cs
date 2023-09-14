@@ -77,7 +77,7 @@ namespace GeekShopping.CartApi.Controllers
 
                 if (!result) return NotFound();
 
-                return Ok(result);
+                return Ok();
             }
 
             return BadRequest();
@@ -95,7 +95,7 @@ namespace GeekShopping.CartApi.Controllers
                     return NotFound();
                 }
 
-                return Ok(result);
+                return Ok();
             }
 
             return BadRequest();
@@ -113,7 +113,7 @@ namespace GeekShopping.CartApi.Controllers
                     return NotFound();
                 }
 
-                return Ok(result);
+                return Ok();
             }
 
             return BadRequest();
