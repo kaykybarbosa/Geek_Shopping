@@ -51,7 +51,7 @@ namespace GeekShopping.Controllers
 
         [Authorize]
         [HttpPost("create-product")]
-        public async Task<ActionResult<ProductResponse>> Create([FromBody] ProductRequest productDto)
+        public async Task<IActionResult> Create([FromBody] ProductRequest productDto)
         {
             if (ModelState.IsValid)
             {
