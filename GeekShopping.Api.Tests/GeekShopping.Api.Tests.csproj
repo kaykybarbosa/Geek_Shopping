@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GeekShopping.CartApi\GeekShopping.CartApi.csproj" />
+    <ProjectReference Include="..\GeekShopping.CouponApi\GeekShopping.CouponApi.csproj" />
     <ProjectReference Include="..\GeekShopping\GeekShopping.ProductApi.csproj" />
   </ItemGroup>
 </Project>

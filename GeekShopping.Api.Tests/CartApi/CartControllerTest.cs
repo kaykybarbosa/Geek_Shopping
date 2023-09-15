@@ -2,13 +2,9 @@
 using FluentAssertions;
 using GeekShopping.CartApi.Controllers;
 using GeekShopping.CartApi.Dtos.Request;
-using GeekShopping.CartApi.Dtos.Request.Message;
 using GeekShopping.CartApi.Dtos.Response;
-using GeekShopping.CartApi.Dtos.Response.Coupon;
 using GeekShopping.CartApi.Interfaces;
 using GeekShopping.CartApi.Interfaces.IServices;
-using GeekShopping.MessageBus;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShopping.Api.Tests.CartApi
