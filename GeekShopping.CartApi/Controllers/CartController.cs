@@ -30,8 +30,6 @@ namespace GeekShopping.CartApi.Controllers
             {
                 var result = await _cartService.FindCartByUserId(id);
 
-                if(result == null) return NotFound();
-
                 return Ok(result);
             }
 
@@ -44,8 +42,6 @@ namespace GeekShopping.CartApi.Controllers
             if (ModelState.IsValid)
             {
                 var result = await _cartService.SaveOrUpdateCart(cartRequest);
-
-                if (result == null) return NotFound();
 
                 return Ok(result);
             }
@@ -60,8 +56,6 @@ namespace GeekShopping.CartApi.Controllers
             {
                 var result = await _cartService.SaveOrUpdateCart(cartRequest);
 
-                if (result == null) return NotFound();
-
                 return Ok(result);
             }
 
@@ -75,7 +69,7 @@ namespace GeekShopping.CartApi.Controllers
             {
                 var result = await _cartService.RemoveFromCart(id);
 
-                if (!result) return NotFound();
+                if (!result) return BadRequest();
 
                 return Ok();
             }
@@ -124,7 +118,7 @@ namespace GeekShopping.CartApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                var token = await HttpContext.GetTokenAsync("access_token");
+                string token = await HttpContext.GetTokenAsync("access_token");
 
                 var coupon = request.CouponCode;
                 if (!string.IsNullOrEmpty(coupon))
