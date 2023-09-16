@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure;
 using FakeItEasy;
 using FluentAssertions;
 using GeekShopping.Dtos.Request;
@@ -8,7 +7,6 @@ using GeekShopping.Dtos.Response;
 using GeekShopping.Interfaces;
 using GeekShopping.Model;
 using GeekShopping.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace GeekShopping.Api.Tests.ProductApi
 {
@@ -44,6 +42,22 @@ namespace GeekShopping.Api.Tests.ProductApi
             result.Should().NotBeNull();
             result.Should().NotBeOfType<Exception>();
             result.Should().BeEquivalentTo(response);
+        }
+
+        [Fact]
+        public async Task ProductService_FindProductById_ReturnNull()
+        {
+            //Arrange
+            var idInvalid = 0L;
+            Product? productNull = null;
+
+            A.CallTo(() => _repository.FindById(idInvalid)).Returns(Task.FromResult(productNull));
+
+            //Act
+            var result = await _service.FindProductById(idInvalid);
+
+            //Assert
+            result.Should().BeNull();
         }
 
         [Fact]
@@ -85,7 +99,7 @@ namespace GeekShopping.Api.Tests.ProductApi
             result.Should().NotBeOfType<Exception>();
             result.Should().BeEquivalentTo(response);    
         }
-
+        
         [Fact]
         public async Task ProductService_UpdateProduct_ReturnProductResponse()
         {
@@ -120,6 +134,21 @@ namespace GeekShopping.Api.Tests.ProductApi
             //Assert
             result.Should().NotBe(false);
             result.Should().BeTrue(); 
+        }
+
+        [Fact]
+        public async Task ProductService_DeleteProduct_ReturnFalse()
+        {
+            //Arrange
+            long idInvalid = 0L;
+            A.CallTo(() => _repository.Delete(idInvalid)).Returns(Task.FromResult(false));
+
+            //Act
+            var result = await _service.DeleteProduct(idInvalid);
+
+            //Assert
+            result.Should().NotBe(true);
+            result.Should().Be(false); 
         }
     }
 }

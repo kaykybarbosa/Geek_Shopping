@@ -36,7 +36,7 @@ namespace GeekShopping.Services
         {
             IEnumerable<Product> products = await _productRepository.FindAll();
            
-            return _mapper.Map<IEnumerable<ProductResponse>>(products); ;
+            return _mapper.Map<IEnumerable<ProductResponse>>(products);
    
         }
 
@@ -44,10 +44,15 @@ namespace GeekShopping.Services
         {
             try
             {
+                if (request == null)
+                {
+                    return null;
+                }
+
                 Product product = _mapper.Map<Product>(request);
                 await _productRepository.Create(product);
 
-                return _mapper.Map<ProductResponse>(product); ;
+                return _mapper.Map<ProductResponse>(product);
 
             }
             catch (Exception)
@@ -55,6 +60,7 @@ namespace GeekShopping.Services
                 return null;
             }
         }
+
         public async Task<ProductResponse> UpdateProduct(ProductRequestUpdate requestUpdate)
         {
             try
@@ -62,7 +68,7 @@ namespace GeekShopping.Services
                 Product product = _mapper.Map<Product>(requestUpdate);
                 await _productRepository.Update(product);
 
-                return _mapper.Map<ProductResponse>(product); ;
+                return _mapper.Map<ProductResponse>(product);
 
             }
             catch (Exception)
