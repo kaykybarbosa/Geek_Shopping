@@ -9,7 +9,7 @@ namespace GeekShopping.CartApi.Services.CartService
 {
     public class CartService : ICartService
     {
-        private ICartRepository _cartRepository;
+        private readonly ICartRepository _cartRepository;
         private readonly IMapper _mapper;
 
         public CartService(ICartRepository cartRepository, IMapper mapper)
@@ -20,7 +20,7 @@ namespace GeekShopping.CartApi.Services.CartService
 
         public async Task<bool> ApplyCoupon(string userId, string couponCode)
         {
-            var header = await _cartRepository.FindCartHeader(userId);
+            CartHeader header = await _cartRepository.FindCartHeader(userId);
 
             if (header != null)
             {
@@ -35,7 +35,7 @@ namespace GeekShopping.CartApi.Services.CartService
 
         public async Task<bool> RemoveCoupon(string userId)
         {
-            var header = await _cartRepository.FindCartHeader(userId);
+            CartHeader header = await _cartRepository.FindCartHeader(userId);
 
             if (header != null)
             {
@@ -82,14 +82,14 @@ namespace GeekShopping.CartApi.Services.CartService
             Cart cart = _mapper.Map<Cart>(cartRequest);
 
             //Check if the product is alreay saved in database, if it does not exist the save
-            var product = await _cartRepository.FindProductById(cart.CartDetails.FirstOrDefault().ProductId);
+            Product product = await _cartRepository.FindProductById(cart.CartDetails.FirstOrDefault().ProductId);
             if (product == null)
             {
                 await _cartRepository.CreateProduct(cart.CartDetails.FirstOrDefault().Product);
             }
 
             //Check if CartHeader is null
-            var cartHeader = await _cartRepository.FindCartHeaderNoTracking(cart.CartHeader.UserId);
+            CartHeader cartHeader = await _cartRepository.FindCartHeaderNoTracking(cart.CartHeader.UserId);
             if (cartHeader == null)
             {
                 //Create CartHeader and CartDetails
@@ -107,7 +107,7 @@ namespace GeekShopping.CartApi.Services.CartService
                 var detailtId = cartRequest.CartDetails.FirstOrDefault().ProductId;
                 var headerId = cartHeader.Id;
 
-                var cartDetails = await _cartRepository.FindCartDetailNoTracking(detailtId, headerId);
+                CartDetail cartDetails = await _cartRepository.FindCartDetailNoTracking(detailtId, headerId);
 
                 if (cartDetails == null)
                 {
@@ -115,7 +115,7 @@ namespace GeekShopping.CartApi.Services.CartService
                     cart.CartDetails.FirstOrDefault().CartHeaderId = cartHeader.Id;
                     cart.CartDetails.FirstOrDefault().Product = null;
 
-                    var cartDetailSaved = cart.CartDetails.FirstOrDefault();
+                    CartDetail cartDetailSaved = cart.CartDetails.FirstOrDefault();
                     await _cartRepository.CreateCartDetails(cartDetailSaved);
                 }
                 else
@@ -151,7 +151,7 @@ namespace GeekShopping.CartApi.Services.CartService
 
                 if (total == 1)
                 {
-                    var cartHeaderToRemove = await _cartRepository.FindCartHeader(cartDetail.CartHeaderId);
+                    CartHeader cartHeaderToRemove = await _cartRepository.FindCartHeader(cartDetail.CartHeaderId);
 
                     await _cartRepository.RemoveCartHeader(cartHeaderToRemove);
                 }

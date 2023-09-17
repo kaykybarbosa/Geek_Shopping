@@ -74,10 +74,10 @@ namespace GeekShopping.CartApi.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<CartDetail>> FindCartDetails(long cartHeaderId)
+        public Task<IEnumerable<CartDetail>> FindCartDetails(long cartHeaderId)
         {
-            return _context.CartDetails.Where(c => c.CartHeaderId == cartHeaderId)
-                .Include(c => c.Product);
+            return Task.FromResult<IEnumerable<CartDetail>>(_context.CartDetails.Where(c => c.CartHeaderId == cartHeaderId)
+                .Include(c => c.Product));
         }
 
         public async Task<CartDetail> FindCartDetail(long cartDetailId)
