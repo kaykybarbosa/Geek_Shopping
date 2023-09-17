@@ -104,7 +104,7 @@ namespace GeekShopping.CartApi.Services.CartService
             {
                 //If CartHeader is not null
                 //Check if CartHeader has some product
-                var detailtId = cartRequest.CartDetails.FirstOrDefault().ProductId;
+                var detailtId = cart.CartDetails.FirstOrDefault().ProductId;
                 var headerId = cartHeader.Id;
 
                 CartDetail cartDetails = await _cartRepository.FindCartDetailNoTracking(detailtId, headerId);
@@ -130,7 +130,7 @@ namespace GeekShopping.CartApi.Services.CartService
                 }
             }
 
-            return _mapper.Map<CartResponse>(cart);
+                return _mapper.Map<CartResponse>(cart);
         }
 
         public async Task<bool> RemoveFromCart(long cartDetailsId)
@@ -140,6 +140,11 @@ namespace GeekShopping.CartApi.Services.CartService
                 CartDetail cartDetail = await _cartRepository.FindCartDetail(cartDetailsId);
 
                 IEnumerable<CartDetail> cartDetails = await _cartRepository.FindCartDetails(cartDetail.CartHeaderId);
+
+                if (cartDetails == null)
+                {
+                    return false;
+                }
 
                 int total = 0;
                 foreach (var items in cartDetails)
