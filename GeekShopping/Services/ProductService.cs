@@ -24,9 +24,7 @@ namespace GeekShopping.Services
             
             if (product != null)
             {
-                ProductResponse productMapper = _mapper.Map<ProductResponse>(product);
-
-                return productMapper;
+                return _mapper.Map<ProductResponse>(product);
             }
 
             return null;
@@ -83,10 +81,7 @@ namespace GeekShopping.Services
             {
                 bool result = await _productRepository.Delete(id);
 
-                if (!result)
-                    return false;
-
-                return true;
+                return result;
             
             }
             catch (Exception)

@@ -16,14 +16,12 @@ namespace GeekShopping.Repositories
 
         public async Task<IEnumerable<Product>> FindAll()
         {
-            List<Product> products = await _context.Products.ToListAsync();
-            return products;
+            return await _context.Products.ToListAsync();
         }
 
         public async Task<Product> FindById(long id)
         {
-            Product product = await _context.Products.Where(p => p.Id == id).FirstOrDefaultAsync();
-            return product;
+            return await _context.Products.Where(p => p.Id == id).AsNoTracking().FirstOrDefaultAsync();
         }
 
         public async Task<Product> Create(Product product)

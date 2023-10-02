@@ -3,10 +3,10 @@
     public class ProductResponse
     {
         public long Id { get; set; }
-        public String Name { get; set; }
+        public string Name { get; set; }
         public decimal Price { get; set; }
-        public String Description { get; set; }
-        public String CategoryName { get; set; }
-        public String ImageUrl { get; set; }
+        public string Description { get; set; }
+        public string CategoryName { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

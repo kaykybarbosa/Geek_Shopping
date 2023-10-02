@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShopping.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Authorize]
     [ApiController]
+    [Route("api/v1/[controller]")]
     public class ProductController : ControllerBase
     {
         private IProductService _productService;
@@ -17,7 +18,8 @@ namespace GeekShopping.Controllers
         {
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
-        
+
+        [AllowAnonymous]
         [HttpGet("all-products")]
         public async Task<IActionResult> FindAll()
         {
@@ -32,7 +34,6 @@ namespace GeekShopping.Controllers
 
         }
 
-        [Authorize]
         [HttpGet("find-product/{id}")]
         public async Task<IActionResult> FindById(long id)
         {
@@ -50,7 +51,6 @@ namespace GeekShopping.Controllers
 
         }
 
-        [Authorize]
         [HttpPost("create-product")]
         public async Task<IActionResult> Create([FromBody] ProductRequest productDto)
         {
@@ -67,16 +67,20 @@ namespace GeekShopping.Controllers
             return StatusCode(500);
         }
 
-        [Authorize]
         [HttpPut("update-product")]
         public async Task<IActionResult> Update([FromBody] ProductRequestUpdate productUpdateDto)
         {
             if (ModelState.IsValid)
             {
-                var result = await _productService.UpdateProduct(productUpdateDto);
+                var productExist = await _productService.FindProductById(productUpdateDto.Id);
+                
+                if (productExist != null )
+                {
+                    var result = await _productService.UpdateProduct(productUpdateDto);
 
-                if(result != null)
-                    return Ok(result);
+                    if (result != null)
+                        return Ok(result);
+                }
 
                 return BadRequest();
             }

@@ -89,7 +89,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseStatusCodePages();
 app.UseAuthentication();
 app.UseAuthorization();
 
